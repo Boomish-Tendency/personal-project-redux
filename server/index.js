@@ -37,6 +37,8 @@ app.post("/auth/register", auth.register);
 app.post("/auth/login", auth.login);
 app.post("/auth/logout", auth.logout);
 app.get("/auth/userSession", auth.getUserSession);
+"/auth/reset/:resetPasswordToken"
+"auth/forgotpassword"
 
 app.get("/api/seeds", seedCtrl.getAllSeeds)
 app.get("/api/seeds/:id", seedCtrl.getUserSeeds)

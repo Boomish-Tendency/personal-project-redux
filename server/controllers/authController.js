@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 module.exports = {
   register: async (req, res) => {
     const db = req.app.get("db");
-    const { email, password } = req.body;
+    const { email, firstName, lastName, password } = req.body;
 
     const [user] = await db.check_user([email]);
 
@@ -13,8 +13,16 @@ module.exports = {
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
+    const dateCreated = Date.now();
 
-    const [newUser] = await db.register_user([email, hash]);
+    const [newUser] = await db.register_user([
+      email,
+      firstName,
+      lastName,
+      hash,
+      dateCreated,
+      dateCreated,
+    ]);
     req.session.user = newUser;
     res.status(200).send(req.session.user);
   },
@@ -48,7 +56,7 @@ module.exports = {
   getUserSession: (req, res) => {
     if (req.session.user) {
       res.status(200).send(req.session.user);
-    } else {  
+    } else {
       res.status(500).send("Server Error: No known session");
     }
   },
